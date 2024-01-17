@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "whisper-app"
+version = "0.1.0"
+description = ""
+authors = ["Haoxian WANG <whx.wanghaoxian@gmail.com>"]
+readme = "README.md"
+packages = [
+    { include = "app.py", from = "." },
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+faster-whisper = "^0.10.0"
+fastapi = "^0.109.0"
+loguru = "^0.7.2"
+uvicorn = "^0.26.0"
+python-multipart = "^0.0.6"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.12.1"
+pylint = "^3.0.3"
+mypy = "^1.8.0"
+isort = "^5.13.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
