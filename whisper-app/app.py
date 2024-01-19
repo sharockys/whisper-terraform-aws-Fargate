@@ -7,6 +7,7 @@ The doc of the API will be available at http://localhost:8000/docs
 """
 
 from typing import Any, BinaryIO, Dict, List
+from time import time
 
 import uvicorn
 from fastapi import FastAPI, UploadFile
@@ -128,7 +129,10 @@ async def transcribe(audio_file: UploadFile) -> Dict[str, Dict[str, Any]]:
                 ]
             }
     """
+    logger.info(f"Received file '{audio_file.filename}'")
+    start = time()
     result = stt_inference(audio_file.file)
+    logger.info(f"Transcription done in {time() - start:.2f}s")
     return result
 
 

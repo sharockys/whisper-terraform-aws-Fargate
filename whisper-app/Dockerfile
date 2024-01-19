@@ -1,5 +1,5 @@
 # For more information, please refer to https://aka.ms/vscode-docker-python
-FROM python:3.10-slim
+FROM public.ecr.aws/docker/library/python:3.10.13-slim
 
 EXPOSE 8000
 
