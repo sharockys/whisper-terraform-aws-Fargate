@@ -22,14 +22,6 @@ module "iam" {
 
 }
 
-module "vpc_module" {
-  source                    = "./modules/vpc"
-  vpc_cidr_block            = var.vpc_cidr_block
-  subnet_public_cidr_block  = var.subnet_public_cidr_block
-  subnet_private_cidr_block = var.subnet_private_cidr_block
-  project_name              = var.project_name
-}
-
 module "ecr" {
   source = "./modules/ecr"
 }

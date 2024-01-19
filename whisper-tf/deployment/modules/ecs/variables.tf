@@ -9,25 +9,6 @@ variable "ecr_repository_url" {
   type        = string
 }
 
-variable "vpc_id" {
-  description = "The ID of the VPC"
-  type        = string
-}
-
-variable "public_subnet_id" {
-  description = "The IDs of the subnets"
-  type        = string
-}
-
-variable "private_subnet_id" {
-  description = "The IDs of the subnets"
-  type        = string
-}
-
-variable "nat_gateway_id" {
-  description = "The ID of the NAT gateway"
-  type        = string
-}
 
 variable "ecs_task_desired_count" {
   description = "The number of instances of the task to run"
@@ -56,13 +37,13 @@ variable "ecr_repository_tag" {
 variable "cpu_units" {
   description = "The number of cpu units to reserve for the container"
   type        = number
-  default     = 2048 # 1024 = 1 vCPU
+  default     = 1024 # 1024 = 1 vCPU
 }
 
 variable "memory" {
   description = "The amount of memory (in MiB) to allow the container to use"
   type        = number
-  default     = 4096
+  default     = 2048
 }
 
 

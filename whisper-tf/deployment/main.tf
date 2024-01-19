@@ -32,8 +32,4 @@ module "ecs" {
   source             = "./modules/ecs"
   region             = var.region
   ecr_repository_url = data.terraform_remote_state.bootstrap.outputs.ecr_repository_url
-  public_subnet_id   = data.terraform_remote_state.bootstrap.outputs.public_subnet_id
-  private_subnet_id  = data.terraform_remote_state.bootstrap.outputs.private_subnet_id
-  nat_gateway_id     = data.terraform_remote_state.bootstrap.outputs.nat_gateway_id
-  vpc_id             = data.terraform_remote_state.bootstrap.outputs.vpc_id
 }
