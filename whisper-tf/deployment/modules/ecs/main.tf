@@ -15,12 +15,20 @@ resource "aws_ecs_service" "whisper_app_service" {
   network_configuration {
     security_groups  = [aws_security_group.whisper_app_sg.id]
     subnets          = [aws_subnet.whisper_subnet_1.id, aws_subnet.whisper_subnet_2.id]
-    assign_public_ip = true
+    assign_public_ip = true # true only for debugging
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.wshiper_lb_target_group.arn
+    container_name   = "whisper-app"
+    container_port   = 8000
   }
 
   lifecycle {
     ignore_changes = [desired_count]
   }
+
+
 }
 
 resource "aws_cloudwatch_log_group" "whisper_log_group" {
@@ -58,7 +66,14 @@ resource "aws_ecs_task_definition" "whisper_app_task" {
     {
       name  = "whisper-app",
       image = "${var.ecr_repository_url}:${var.ecr_repository_tag}",
-      # essential = true, # check passed health check is important
+      healthCheck = {
+        command     = ["CMD-SHELL", "curl -sSf  localhost:8000/docs > /dev/null"]
+        interval    = 30
+        timeout     = 10
+        retries     = 3
+        startPeriod = 60 # the time for downloading model 
+      },
+      essential = true, # check passed health check is important
       environment = [
         { "name" : "HF_HOME", "value" : "/tmp/.cache/huggingface" }
       ]
@@ -88,11 +103,12 @@ resource "aws_security_group" "whisper_app_sg" {
   vpc_id      = aws_vpc.whisper_vpc.id
 
   ingress {
-    description = "HTTP"
-    from_port   = 8000
-    to_port     = 8000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
+    description     = "HTTP"
+    from_port       = 80
+    to_port         = 8000
+    protocol        = "tcp"
+    cidr_blocks     = ["0.0.0.0/0"]
+    security_groups = [aws_security_group.alb_sg.id]
   }
 
   # allow all egress traffic

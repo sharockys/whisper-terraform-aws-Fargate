@@ -13,7 +13,7 @@ variable "ecr_repository_url" {
 variable "ecs_task_desired_count" {
   description = "The number of instances of the task to run"
   type        = number
-  default     = 1
+  default     = 3
 }
 
 variable "ecs_task_deployment_minimum_healthy_percent" {
@@ -37,13 +37,13 @@ variable "ecr_repository_tag" {
 variable "cpu_units" {
   description = "The number of cpu units to reserve for the container"
   type        = number
-  default     = 1024 # 1024 = 1 vCPU
+  default     = 2048 # 1024 = 1 vCPU
 }
 
 variable "memory" {
   description = "The amount of memory (in MiB) to allow the container to use"
   type        = number
-  default     = 2048
+  default     = 4096
 }
 
 

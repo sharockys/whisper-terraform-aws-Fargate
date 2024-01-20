@@ -18,9 +18,8 @@ output "security_group_id" {
   description = "The ID of the Security Group"
 }
 
-# output "public_ip" {
-#   value       = module.ecs.public_ip
-#   description = "The public IP address of the instance"
-# }
-
+output "dns_name" {
+  value       = module.ecs.dns_name
+  description = "The DNS name of the load balancer"
+}
 

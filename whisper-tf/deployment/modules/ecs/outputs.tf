@@ -18,6 +18,11 @@ output "security_group_id" {
   description = "The ID of the Security Group"
 }
 
+output "dns_name" {
+  value       = aws_lb.whisper_lb.dns_name
+  description = "The DNS name of the load balancer"
+}
+
 # output "public_ip" {
 #   value       = aws_eip.whiper_app_eip.public_ip
 #   description = "The public IP address of the instance"
