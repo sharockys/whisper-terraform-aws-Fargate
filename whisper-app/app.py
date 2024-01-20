@@ -6,11 +6,12 @@ The app will be available at http://localhost:8000.
 The doc of the API will be available at http://localhost:8000/docs 
 """
 
-from typing import Any, BinaryIO, Dict, List
 from time import time
+from typing import Any, BinaryIO, Dict, List
 
 import uvicorn
 from fastapi import FastAPI, UploadFile
+from fastapi.responses import JSONResponse
 from faster_whisper import WhisperModel  # type: ignore
 from loguru import logger
 from pydantic import BaseModel, Field
@@ -134,6 +135,14 @@ async def transcribe(audio_file: UploadFile) -> Dict[str, Dict[str, Any]]:
     result = stt_inference(audio_file.file)
     logger.info(f"Transcription done in {time() - start:.2f}s")
     return result
+
+
+@app.get("/healthz")
+async def health_check():
+    """
+    Health check endpoint
+    """
+    return JSONResponse(status_code=200, content={"status": "healthy"})
 
 
 if __name__ == "__main__":

@@ -10,7 +10,10 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # ENV for huggingface models 
-ENV HF_HOME /root/.cache/huggingface
+ENV HF_HOME /tmp/.cache/huggingface
+
+RUN apt-get update && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install pip requirements
 WORKDIR /app
@@ -23,4 +26,4 @@ RUN adduser -u 1000 --disabled-password --gecos "" appuser && chown -R appuser /
 USER appuser
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
-CMD ["uvicorn", "--port", "8000", "--host", "0.0.0.0", "app:app"]
+CMD ["uvicorn", "--port", "8000", "--host", "0.0.0.0", "app:app", "--timeout-keep-alive", "600" ]
