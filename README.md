@@ -7,18 +7,59 @@ There are two main components to the Whisper ML deployment project:
 1. Whisper APP - The Whisper APP is a FastAPI application that exposes APIs for users to interact with the Whisper ML model. 
 2. Terraform - Terraform is used to provision the infrastructure required to run the Whisper APP.
 
-A makefile is provided to simplify the development and deployment process.
-
 ## Project Structure
 
+### PyProject
+├── Dockerfile
+├── Makefile
+├── README.md
+├── app.py
+├── audio.mp3
+├── docker-compose.yml
+├── poetry.lock
+└── pyproject.toml
 
-## Prerequisites
+### Terraform
+├── README.md
+├── boostrap
+│   ├── main.tf
+│   ├── modules
+│   │   ├── code_build
+│   │   │   ├── buildspec.yml.tpl
+│   │   │   ├── main.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── variables.tf
+│   │   ├── code_commit
+│   │   │   ├── main.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── variables.tf
+│   │   ├── ecr
+│   │   │   ├── main.tf
+│   │   │   ├── outputs.tf
+│   │   │   └── variables.tf
+│   │   └── iam
+│   │       ├── main.tf
+│   │       ├── outputs.tf
+│   │       └── variables.tf
+│   ├── outputs.tf
+│   └── variables.tf
+└── deployment
+    ├── main.tf
+    ├── modules
+    │   └── ecs
+    │       ├── alb.tf
+    │       ├── ecs_iam.tf
+    │       ├── efs.tf
+    │       ├── main.tf
+    │       ├── outputs.tf
+    │       ├── variables.tf
+    │       └── vpc.tf
+    ├── outputs.tf
+    └── variables.tf
 
-## Installation
+## More documentation 
+https://wanghaoxian.notion.site/Whisper-MVP-by-Haoxian-WANG-bc2e41735bd641249c69dbfd3957616e 
 
-## Configuration
-
-## Usage
-
-## Troubleshooting
+Time consumed for this project: (available on the notion page)
+![Alt text](<screenshoots/Screenshot 2024-01-21 at 00.29.41.png>)
 
