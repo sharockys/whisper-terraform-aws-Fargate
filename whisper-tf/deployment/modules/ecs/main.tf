@@ -27,9 +27,45 @@ resource "aws_ecs_service" "whisper_app_service" {
   lifecycle {
     ignore_changes = [desired_count]
   }
-
-
 }
+
+resource "aws_appautoscaling_target" "whisper_scale_target" {
+  max_capacity       = 10
+  min_capacity       = 1
+  resource_id        = "service/${aws_ecs_cluster.whisper_app_cluster.name}/${aws_ecs_service.whisper_app_service.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  service_namespace  = "ecs"
+}
+
+resource "aws_appautoscaling_policy" "wshiper_scale_up" {
+  name               = "whisper-scale-up"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.whisper_scale_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.whisper_scale_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.whisper_scale_target.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    target_value = 75.0
+  }
+}
+resource "aws_appautoscaling_policy" "whisper_scale_down" {
+  name               = "whisper-scale-down"
+  policy_type        = "TargetTrackingScaling"
+  resource_id        = aws_appautoscaling_target.whisper_scale_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.whisper_scale_target.scalable_dimension
+  service_namespace  = aws_appautoscaling_target.whisper_scale_target.service_namespace
+
+  target_tracking_scaling_policy_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ECSServiceAverageCPUUtilization"
+    }
+    target_value = 25.0
+  }
+}
+
 
 resource "aws_cloudwatch_log_group" "whisper_log_group" {
   name = "whisper-log-group"
@@ -67,12 +103,13 @@ resource "aws_ecs_task_definition" "whisper_app_task" {
       name  = "whisper-app",
       image = "${var.ecr_repository_url}:${var.ecr_repository_tag}",
       healthCheck = {
-        command     = ["CMD-SHELL", "curl -sSf  localhost:8000/docs > /dev/null"]
+        command     = ["CMD", "curl", "-f", "http://localhost:8000/healthz"]
         interval    = 30
         timeout     = 10
         retries     = 3
         startPeriod = 60 # the time for downloading model 
       },
+
       essential = true, # check passed health check is important
       environment = [
         { "name" : "HF_HOME", "value" : "/tmp/.cache/huggingface" }
@@ -107,7 +144,7 @@ resource "aws_security_group" "whisper_app_sg" {
     from_port       = 80
     to_port         = 8000
     protocol        = "tcp"
-    cidr_blocks     = ["0.0.0.0/0"]
+    cidr_blocks     = [aws_subnet.whisper_subnet_1.cidr_block, aws_subnet.whisper_subnet_2.cidr_block]
     security_groups = [aws_security_group.alb_sg.id]
   }
 

@@ -36,7 +36,7 @@ resource "aws_lb_target_group" "wshiper_lb_target_group" {
     healthy_threshold   = 3
     unhealthy_threshold = 3
     timeout             = 30
-    path                = "/docs"
+    path                = "/healthz"
     interval            = 60
     matcher             = "200"
   }
