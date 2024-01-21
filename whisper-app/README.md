@@ -49,3 +49,29 @@ curl -f http://localhost:8000/healthz
 ## Docs 
 The docs are generated using FastAPI. 
 To view the docs, run the app and go to http://localhost:8000/docs 
+
+A well defined scheme is provided for the API. 
+The API accepts a multipart/form-data with a file field named `audio_file`.
+The API returns a json response with the following format:
+```json 
+{
+  "metadata": {
+    "metadata": {
+      "language": "fr",
+      "probability": 0.9999
+    }
+  },
+  "transcription": [
+    {
+      "end": 4,
+      "start": 0,
+      "text": "je suis un chat"
+    },
+    {
+      "end": 8,
+      "start": 4.01,
+      "text": "je suis un chien"
+    }
+  ]
+}
+```
