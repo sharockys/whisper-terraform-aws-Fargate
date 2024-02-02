@@ -10,6 +10,7 @@ There are two main components to the Whisper ML deployment project:
 ## Project Structure
 
 ### PyProject
+```
 ├── Dockerfile
 ├── Makefile
 ├── README.md
@@ -18,9 +19,11 @@ There are two main components to the Whisper ML deployment project:
 ├── docker-compose.yml
 ├── poetry.lock
 └── pyproject.toml
+```
 
 ### Terraform
-├── README.md
+```
+├── README.md  
 ├── boostrap
 │   ├── main.tf
 │   ├── modules
@@ -56,10 +59,7 @@ There are two main components to the Whisper ML deployment project:
     │       └── vpc.tf
     ├── outputs.tf
     └── variables.tf
-
+```
 ## More documentation 
 https://wanghaoxian.notion.site/Whisper-MVP-by-Haoxian-WANG-bc2e41735bd641249c69dbfd3957616e 
-
-Time consumed for this project: (available on the notion page)
-![Alt text](<screenshoots/Screenshot 2024-01-21 at 00.29.41.png>)
 
